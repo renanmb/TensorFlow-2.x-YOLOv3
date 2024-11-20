@@ -1,0 +1,29 @@
+Requirements
+
+numpy>=1.18.2
+scipy>=1.4.1
+wget>=3.2
+seaborn>=0.10.0
+tensorflow
+opencv-python==4.4.0.46
+tqdm==4.43.0
+pandas
+awscli
+urllib3
+mss
+
+Conda Env yolov4
+
+
+Download the weights to the folder model_data
+
+Thre is numerical imcompativility between Tensorflow Versions the current version 2.18 with Keras has numerical issues
+
+Error: A KerasTensor cannot be used as input to a TensorFlow function.
+https://www.kaggle.com/discussions/questions-and-answers/480772
+
+Keras 2 <> Keras 3 incompatibilities #18467
+https://github.com/keras-team/keras/issues/18467
+
+tensorflow back compatibility: KerasTensor and tf-keras tensor
+https://stackoverflow.com/questions/78968834/tensorflow-back-compatibility-kerastensor-and-tf-keras-tensor

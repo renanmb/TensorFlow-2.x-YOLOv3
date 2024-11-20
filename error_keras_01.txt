@@ -1,0 +1,55 @@
+Notes on the error running the script python ./tools/Convert_to_pb.py 
+
+
+
+(yolov4) renan@DESKTOP-O4F3GOJ:/mnt/e/Bored Engineer Github/renanmb - Github/TensorFlow-2.x-YOLOv3$ python ./tools/Convert_to_pb.py 
+2024-11-19 18:47:09.957262: E external/local_xla/xla/stream_executor/cuda/cuda_fft.cc:477] Unable to register cuFFT factory: Attempting to register factory for plugin cuFFT when one has already been registered
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+E0000 00:00:1732060030.061707   34191 cuda_dnn.cc:8310] Unable to register cuDNN factory: Attempting to register factory for plugin cuDNN when one has already been registered
+E0000 00:00:1732060030.088973   34191 cuda_blas.cc:1418] Unable to register cuBLAS factory: Attempting to register factory for plugin cuBLAS when one has already been registered
+2024-11-19 18:47:10.319716: I tensorflow/core/platform/cpu_feature_guard.cc:210] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+I0000 00:00:1732060033.885178   34191 gpu_device.cc:2022] Created device /job:localhost/replica:0/task:0/device:GPU:0 with 22277 MB memory:  -> device: 0, name: NVIDIA TITAN RTX, pci bus id: 0000:02:00.0, compute capability: 7.5
+Traceback (most recent call last):
+  File "/mnt/e/Bored Engineer Github/renanmb - Github/TensorFlow-2.x-YOLOv3/./tools/Convert_to_pb.py", line 31, in <module>
+    yolo = Create_Yolo(input_size=YOLO_INPUT_SIZE, CLASSES=YOLO_COCO_CLASSES)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/Bored Engineer Github/renanmb - Github/TensorFlow-2.x-YOLOv3/yolov3/yolov4.py", line 395, in Create_Yolo
+    conv_tensors = YOLOv4(input_layer, NUM_CLASS)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/Bored Engineer Github/renanmb - Github/TensorFlow-2.x-YOLOv3/yolov3/yolov4.py", line 288, in YOLOv4
+    route_1, route_2, conv = cspdarknet53(input_layer)
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/Bored Engineer Github/renanmb - Github/TensorFlow-2.x-YOLOv3/yolov3/yolov4.py", line 112, in cspdarknet53
+    input_data = convolutional(input_data, (3, 3,  3,  32), activate_type="mish")
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/Bored Engineer Github/renanmb - Github/TensorFlow-2.x-YOLOv3/yolov3/yolov4.py", line 58, in convolutional
+    conv = mish(conv)
+           ^^^^^^^^^^
+  File "/mnt/e/Bored Engineer Github/renanmb - Github/TensorFlow-2.x-YOLOv3/yolov3/yolov4.py", line 63, in mish
+    return x * tf.math.tanh(tf.math.softplus(x))
+                            ^^^^^^^^^^^^^^^^^^^
+  File "/home/renan/anaconda3/envs/yolov4/lib/python3.12/site-packages/tensorflow/python/ops/weak_tensor_ops.py", line 88, in wrapper
+    return op(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^
+  File "/home/renan/anaconda3/envs/yolov4/lib/python3.12/site-packages/tensorflow/python/util/traceback_utils.py", line 153, in error_handler
+    raise e.with_traceback(filtered_tb) from None
+  File "/home/renan/anaconda3/envs/yolov4/lib/python3.12/site-packages/keras/src/backend/common/keras_tensor.py", line 138, in __tf_tensor__
+    raise ValueError(
+ValueError: A KerasTensor cannot be used as input to a TensorFlow function. A KerasTensor is a symbolic placeholder for a shape and dtype, used when constructing Keras Functional models or Keras Functions. You can only use it as input to a Keras layer or a Keras operation (from the namespaces `keras.layers` and `keras.operations`). You are likely doing something like:
+
+```
+x = Input(...)
+...
+tf_fn(x)  # Invalid.
+```
+
+What you should do instead is wrap `tf_fn` in a layer:
+
+```
+class MyLayer(Layer):
+    def call(self, x):
+        return tf_fn(x)
+
+x = MyLayer()(x)
+```
